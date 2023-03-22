@@ -25,8 +25,7 @@ export const FormLogin = ({ navigation }) => {
   const [isShowKeyboard, setisShowKeyboard] = useState(false);
 
   const openLink = () => navigation.navigate("Registration");
-  // const link = "https://www.google.com";
-  // const openLink = () => Linking.openURL(link);
+
   const keyboardHit = () => {
     setisShowKeyboard(false);
     Keyboard.dismiss();
@@ -69,7 +68,6 @@ export const FormLogin = ({ navigation }) => {
                   value={state.password}
                   placeholder="password"
                   onFocus={() => setisShowKeyboard(true)}
-                  // inlineImageRight="search_icon"
                 />
 
                 <TouchableOpacity

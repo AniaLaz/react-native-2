@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, Platform } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Platform,
+  TouchableOpacity,
+} from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -7,7 +13,8 @@ const initialState = {
   post: "",
 };
 
-export const PostScreen = () => {
+export const PostScreen = ({ navigation }) => {
+  const openLink = () => navigation.navigate("Create");
   console.log(Platform.OS);
   // const [state, setState] = useState(initialState);
 
@@ -20,13 +27,10 @@ export const PostScreen = () => {
           <View style={styles.hederTitle}>
             <Text>Публикации</Text>
           </View>
-          <View>
-            <MaterialIcons
-              style={styles.btnLogout}
-              name="logout"
-              size={24}
-              color="#BDBDBD"
-            />
+          <View style={styles.btnLogout}>
+            <TouchableOpacity onPress={openLink}>
+              <MaterialIcons name="logout" size={24} color="#BDBDBD" />
+            </TouchableOpacity>
           </View>
         </Text>
       </View>
@@ -78,6 +82,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#FF6C00",
   },
   btnLogout: {
-    marginLeft: "auto",
+    marginLeft: 103,
   },
 });
