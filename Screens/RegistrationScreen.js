@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
   Text,
@@ -8,6 +9,8 @@ import {
   Platform,
   Linking,
   KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  ImageBackground,
   Keyboard,
 } from "react-native";
 
@@ -17,12 +20,13 @@ const initialState = {
   password: "",
 };
 
-export const Form = () => {
+export const FormRegistration = ({ navigation }) => {
   console.log(Platform.OS);
   const [state, setState] = useState(initialState);
   const [isShowKeyboard, setisShowKeyboard] = useState(false);
-  const link = "https://www.google.com";
-  const openLink = () => Linking.openURL(link);
+  // const link = "https://www.google.com";
+  // const openLink = () => Linking.openURL(link);
+  const openLink = () => navigation.navigate("Login");
   const keyboardHit = () => {
     setisShowKeyboard(false);
     Keyboard.dismiss();
@@ -30,65 +34,90 @@ export const Form = () => {
     setState(initialState);
   };
   return (
-    <View style={styles.form}>
-      <View
-        style={{
-          ...styles.formContaner,
-          marginBottom: isShowKeyboard ? 20 : 78,
-        }}
-      >
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        <ImageBackground
+          style={styles.imageBg}
+          source={require("../images/photoBG.jpg")}
         >
-          <Text style={styles.title}>Регистрация</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={(value) =>
-              setState((prevState) => ({ ...prevState, login: value }))
-            }
-            value={state.login}
-            placeholder="login"
-            onFocus={() => setisShowKeyboard(true)}
-          />
-          <TextInput
-            style={styles.input}
-            onChangeText={(value) =>
-              setState((prevState) => ({ ...prevState, email: value }))
-            }
-            value={state.email}
-            placeholder="email"
-            onFocus={() => setisShowKeyboard(true)}
-          />
-          <TextInput
-            style={styles.inputLast}
-            secureTextEntry={true}
-            onChangeText={(value) =>
-              setState((prevState) => ({ ...prevState, password: value }))
-            }
-            value={state.password}
-            placeholder="password"
-            onFocus={() => setisShowKeyboard(true)}
-            // inlineImageRight="search_icon"
-          />
+          <View style={styles.form}>
+            <View
+              style={{
+                ...styles.formContaner,
+                marginBottom: isShowKeyboard ? 20 : 78,
+              }}
+            >
+              <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+              >
+                <Text style={styles.title}>Регистрация</Text>
+                <TextInput
+                  style={styles.input}
+                  onChangeText={(value) =>
+                    setState((prevState) => ({ ...prevState, login: value }))
+                  }
+                  value={state.login}
+                  placeholder="login"
+                  onFocus={() => setisShowKeyboard(true)}
+                />
+                <TextInput
+                  style={styles.input}
+                  onChangeText={(value) =>
+                    setState((prevState) => ({ ...prevState, email: value }))
+                  }
+                  value={state.email}
+                  placeholder="email"
+                  onFocus={() => setisShowKeyboard(true)}
+                />
+                <TextInput
+                  style={styles.inputLast}
+                  secureTextEntry={true}
+                  onChangeText={(value) =>
+                    setState((prevState) => ({ ...prevState, password: value }))
+                  }
+                  value={state.password}
+                  placeholder="password"
+                  onFocus={() => setisShowKeyboard(true)}
+                  // inlineImageRight="search_icon"
+                />
 
-          <TouchableOpacity
-            activeOpacity={0.8}
-            style={styles.btnForm}
-            onPress={keyboardHit}
-          >
-            <Text style={styles.btnTitle}>Зарегистрироваться</Text>
-          </TouchableOpacity>
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  style={styles.btnForm}
+                  onPress={keyboardHit}
+                >
+                  <Text style={styles.btnTitle}>Зарегистрироваться</Text>
+                </TouchableOpacity>
 
-          <TouchableOpacity onPress={openLink}>
-            <Text style={styles.link}>Уже есть аккаунт? Войти</Text>
-          </TouchableOpacity>
-        </KeyboardAvoidingView>
+                <View style={styles.linkContaner}>
+                  <Text style={styles.linkText}>
+                    Уже есть аккаунт?
+                    <TouchableOpacity onPress={openLink}>
+                      <Text style={styles.link}>Войти</Text>
+                    </TouchableOpacity>
+                  </Text>
+                </View>
+              </KeyboardAvoidingView>
+            </View>
+          </View>
+        </ImageBackground>
+        <StatusBar style="auto" />
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+  imageBg: {
+    flex: 1,
+    // alignItems: "center",
+    justifyContent: "flex-end",
+  },
+
   form: {
     // flex: 1,
     paddingTop: 92,
@@ -142,7 +171,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#FFFFFF",
   },
+  linkContaner: {},
   link: {
+    marginLeft: 10,
+    fontFamily: "Roboto",
+    fontSize: 16,
+    color: "#1B4371",
+  },
+  linkText: {
     fontFamily: "Roboto",
     textAlign: "center",
     fontSize: 16,
