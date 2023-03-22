@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, Platform } from "react-native";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { AntDesign } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
+import { createStackNavigator } from "@react-navigation/stack";
 
 const initialState = {
   post: "",
@@ -16,23 +16,24 @@ export const PostScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.heder}>
-        <Text style={styles.hederTitle}>
-          Публикации
-          <AntDesign name="appstore-o" size={24} color="black" />
-          <Ionicons name="md-checkmark-circle" size={32} color="green" />
+        <Text>
+          <View style={styles.hederTitle}>
+            <Text>Публикации</Text>
+          </View>
+          <View>
+            <MaterialIcons
+              style={styles.btnLogout}
+              name="logout"
+              size={24}
+              color="#BDBDBD"
+            />
+          </View>
         </Text>
       </View>
 
       <View style={styles.containerPosts}>
         <Text>PostScreen</Text>
       </View>
-
-      {/* <View style={styles.futer}>
-        <Text>futer</Text>
-        <View style={styles.btn}>
-          <Text>+</Text>
-        </View>
-      </View> */}
     </View>
   );
 };
@@ -75,5 +76,8 @@ const styles = StyleSheet.create({
     width: 70,
     height: 40,
     backgroundColor: "#FF6C00",
+  },
+  btnLogout: {
+    marginLeft: "auto",
   },
 });
