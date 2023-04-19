@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -12,6 +12,8 @@ import * as MediaLibrary from "expo-media-library";
 import { Camera } from "expo-camera";
 import { AntDesign } from "@expo/vector-icons";
 import { Fontisto } from "@expo/vector-icons";
+import * as Location from "expo-location";
+
 import { log } from "react-native-reanimated";
 const initialState = {
   name: "",
@@ -23,18 +25,39 @@ export const CreatePostsScreen = ({ navigation }) => {
   const [cameraRef, setCameraRef] = useState(null);
   const [photo, setPhoto] = useState(null);
 
+    useEffect(() => {
+      (async () => {
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== "granted") {
+          console.log("Permission to access location was denied");
+        }
+
+      })();
+    }, []);
+
+
   const takePhoto = async () => {
     console.log("photooooooooooooooo");
     const photo = await cameraRef.takePictureAsync();
-    console.log("photo.uri", photo.uri);
+    // const location = await Location.getCurrentPositionAsync({});
+    // console.log("location", location);
+    // console.log("photo.uri", photo.uri);
     // await MediaLibrary.createAssetAsync(photo.uri);
+
 
     setPhoto(photo.uri);
   };
 
-  const sendPhoto = () => {
+  const sendPhoto = async () => {
     console.log("sendPhoto");
-    console.log("nnnnnnnnnn", navigation);
+    const location = await Location.getCurrentPositionAsync({});
+    console.log("location", location);
+    const coords = {
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+    };
+    console.log(coords);
+    // setLocations(coords);
     navigation.navigate("Posts", { photo: photo, state: state });
     // console.log("state", state);
   };

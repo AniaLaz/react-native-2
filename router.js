@@ -4,6 +4,8 @@ import { AntDesign } from "@expo/vector-icons";
 
 const MainStack = createStackNavigator();
 const MainTab = createBottomTabNavigator();
+const Stack = createStackNavigator();
+
 import { View, StyleSheet } from "react-native";
 
 import { FormRegistration } from "./Screens/RegistrationScreen";
@@ -12,8 +14,9 @@ import { Home } from "./Screens/Home";
 import { PostScreen } from "./Screens/PostsScreen";
 import { CreatePostsScreen } from "./Screens/CreatePostsScreen";
 import { ProfileScreen } from "./Screens/ProfileScreen";
+import { MapScreen } from "./Screens/MapScreen";
 
-export const userRouter = (isAuht) => {
+export const UserRouter = (isAuht) => {
   if (!isAuht) {
     return (
       <MainStack.Navigator>
@@ -51,13 +54,8 @@ export const userRouter = (isAuht) => {
             </View>
           ),
         })}
-        // options={{
-        //   headerShown: false,
-        //   tabBarIcon: ({ size, color }) => {
-        //     <AntDesign name="appstore-o" size={25} color="black" />;
-        //   },
-        // }}
       />
+
       <MainTab.Screen
         name="Create"
         component={CreatePostsScreen}
@@ -94,32 +92,50 @@ export const userRouter = (isAuht) => {
           ),
         }}
       />
+      {/* <Stack.Navigator>
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="Map"
+          component={MapScreen}
+        ></Stack.Screen>
+      </Stack.Navigator> */}
     </MainTab.Navigator>
+  );
+ 
+};
 
-    // <MainTab.Navigator
-    //   screenOptions={({ router }) => ({
-    //     tabBarIcon: ({ focused, color, size }) => {
-    //       let iconName;
-    //       if (router.name === "Profile") {
-    //         iconName = focused
-    //           ? "ios-information-circle"
-    //           : "ios-information-circle-outline";
-    //       } else if (route.name === "Create") {
-    //         iconName = focused ? "ios-list-box" : "ios-list";
-    //       }
-    //       return <Ionicons name={iconName} size={size} color={color} />;
-    //     },
-    //   })}
-    //   tabBarOptions={{
-    //     activeTintColor: "tomato",
-    //     inactiveTintColor: "gray",
-    //   }}
-    // >
-    //   <MainTab.Screen name="Profile" component={ProfileScreen} />
-    //   <MainTab.Screen name="Create" component={CreatePostsScreen} />
-    // </MainTab.Navigator>
+
+// export const mapRouter = () => {
+//   return (
+//     <Stack.Navigator>
+//       <Stack.Screen
+//         options={{ headerShown: false }}
+//         name="Map"
+//         component={MapScreen}
+//       ></Stack.Screen>
+//     </Stack.Navigator>
+//   );    
+// }
+
+
+const Router = (isAuht) => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        isAuht="isAuht"
+        name="Home"
+        component={UserRouter}
+        options={{ headerShown: false }}
+      ></Stack.Screen>
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="Map"
+        component={MapScreen}
+      ></Stack.Screen>
+    </Stack.Navigator>
   );
 };
+
 
 const styles = StyleSheet.create({
   btnNav: {
@@ -131,3 +147,5 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
 });
+
+export default Router;

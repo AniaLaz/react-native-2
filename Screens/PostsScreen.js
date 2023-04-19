@@ -9,16 +9,17 @@ import {
   Image,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { createStackNavigator } from "@react-navigation/stack";
+
 import { log } from "react-native-reanimated";
+import { AntDesign } from "@expo/vector-icons";
 
 export const PostScreen = ({ navigation, route }) => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     if (route.params) {
-      console.log("route.params.photo", route.params.photo);
-      console.log("route.params.state.name", route.params.state.name);
+      console.log("route.params", route.params.photo);
+      // console.log("route.params.state.name", route.params.state.name);
       setPosts((prevState) => [...prevState, route.params]);
     }
   }, [route.params]);
@@ -50,7 +51,7 @@ export const PostScreen = ({ navigation, route }) => {
           data={posts}
           keyExtractor={(item, indx) => indx.toString()}
           renderItem={({ item }) => (
-            <View>
+            <View style={styles.containerPost}>
               <Image
                 // source={{
                 //   uri: route.params.photo,
@@ -58,9 +59,21 @@ export const PostScreen = ({ navigation, route }) => {
                 source={{
                   uri: item.photo,
                 }}
-                style={{ height: 200, width: 350 }}
+                style={styles.img}
               />
               <Text>{item.state.name}</Text>
+              <View style={styles.boxLocation}>
+                <TouchableOpacity onPress={() => navigation.navigate("Map")}>
+                  <AntDesign
+                    name="enviromento"
+                    size={24}
+                    color="#BDBDBD"
+
+                    // style={styles.placeIcon}
+                  />
+                </TouchableOpacity>
+                <Text>{item.state.place}</Text>
+              </View>
             </View>
           )}
         />
@@ -104,6 +117,9 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     paddingRight: 16,
   },
+  containerPost: {
+    marginBottom: 43,
+  },
   btn: {
     width: 70,
     height: 40,
@@ -111,5 +127,13 @@ const styles = StyleSheet.create({
   },
   btnLogout: {
     marginLeft: 103,
+  },
+  img: {
+    borderRadius: 8,
+    height: 240,
+    width: 343,
+  },
+  boxLocation: {
+    display: "flex",
   },
 });

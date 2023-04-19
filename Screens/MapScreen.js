@@ -1,14 +1,21 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, Platform } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+} from "react-native";
 
-export const MapScreen = () => {
+export const MapScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.heder}>
         <Text style={styles.hederTitle}>Публикации</Text>
       </View>
       <View style={styles.containerPosts}>
-        <Text>MapScreen</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("Posts")}>
+          <Text>MapScreen</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

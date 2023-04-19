@@ -7,9 +7,9 @@
 //   Keyboard,
 // } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import { userRouter } from "./router";
+import Router from "./router";
 
 export default function App() {
-  const routing = userRouter(true);
+  const routing = Router(true);
   return <NavigationContainer>{routing}</NavigationContainer>;
 }
