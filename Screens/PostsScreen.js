@@ -1,22 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
   View,
   Platform,
   TouchableOpacity,
+  FlatList,
+  Image,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { createStackNavigator } from "@react-navigation/stack";
+import { log } from "react-native-reanimated";
 
-const initialState = {
-  post: "",
-};
+export const PostScreen = ({ navigation, route }) => {
+  const [posts, setPosts] = useState([]);
 
-export const PostScreen = ({ navigation }) => {
+  useEffect(() => {
+    if (route.params) {
+      console.log("route.params.photo", route.params.photo);
+      console.log("route.params.state.name", route.params.state.name);
+      setPosts((prevState) => [...prevState, route.params]);
+    }
+  }, [route.params]);
+
+  console.log("post", posts);
+
   const openLink = () => navigation.navigate("Create");
   console.log(Platform.OS);
-  // const [state, setState] = useState(initialState);
 
   //   const openLink = () => navigation.navigate("Login");
 
@@ -36,6 +46,24 @@ export const PostScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.containerPosts}>
+        <FlatList
+          data={posts}
+          keyExtractor={(item, indx) => indx.toString()}
+          renderItem={({ item }) => (
+            <View>
+              <Image
+                // source={{
+                //   uri: route.params.photo,
+                // }}
+                source={{
+                  uri: item.photo,
+                }}
+                style={{ height: 200, width: 350 }}
+              />
+              <Text>{item.state.name}</Text>
+            </View>
+          )}
+        />
         <Text>PostScreen</Text>
       </View>
     </View>
