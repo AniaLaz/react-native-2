@@ -1,10 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { AntDesign } from "@expo/vector-icons";
 
+const initialState = {
+  latitude: "",
+  longitude: "",
+};
 export const MapScreen = ({ navigation, route }) => {
-  [location, setLocation] = useState(route.params.location);
+  [location, setLocation] = useState(initialState);
+
+  
+
+  useEffect(() => {
+    setLocation(route.params.location);
+    console.log("locationgggggggg", location);
+  }, []);
+ console.log("locationgggggggg222", location);
   // console.log(route.params.location.latitude);
   const openLink = () => navigation.navigate("DefaultScreen");
   return (
@@ -24,13 +36,14 @@ export const MapScreen = ({ navigation, route }) => {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
-      />
-      <Marker
-        coordinate={{
-          latitude: location.latitude,
-          longitude: location.longitude,
-        }}
-      />
+      >
+        <Marker
+          coordinate={{
+            latitude: location.latitude,
+            longitude: location.longitude,
+          }}
+        />
+      </MapView>
     </View>
   );
 };

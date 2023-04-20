@@ -21,6 +21,7 @@ const initialState = {
 };
 
 export const CreatePostsScreen = ({ navigation }) => {
+  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
   const [cameraRef, setCameraRef] = useState(null);
   const [photo, setPhoto] = useState(null);
@@ -71,6 +72,7 @@ export const CreatePostsScreen = ({ navigation }) => {
           <AntDesign name="arrowleft" size={24} color="#BDBDBD" />
         </TouchableOpacity>
       </View>
+
       <View style={styles.containerPosts}>
         <View style={styles.cameraContaner}>
           <Camera style={styles.camera} ref={setCameraRef}>
@@ -89,35 +91,40 @@ export const CreatePostsScreen = ({ navigation }) => {
             </TouchableOpacity>
           </Camera>
         </View>
-
         <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          behavior={Platform.OS === "ios" ? "padding" : "padding"}
         >
-          <TextInput
-            style={styles.input}
-            onChangeText={(value) =>
-              setState((prevState) => ({ ...prevState, name: value }))
-            }
-            value={state.name}
-            placeholder="Название "
-            // onFocus={() => setisShowKeyboard(true)}
-          />
-          <View>
-            <AntDesign
-              name="enviromento"
-              size={24}
-              color="#BDBDBD"
-              style={styles.placeIcon}
-            />
+          <View style={{ marginBottom: isShowKeyboard ? 20 : 30 }}>
             <TextInput
-              style={styles.inputPlace}
+              style={styles.input}
               onChangeText={(value) =>
-                setState((prevState) => ({ ...prevState, place: value }))
+                setState((prevState) => ({ ...prevState, name: value }))
               }
-              value={state.place}
-              placeholder="Местность "
-              // onFocus={() => setisShowKeyboard(true)}
+              onFocus={() => {
+                setIsShowKeyboard(true);
+              }}
+              value={state.name}
+              placeholder="Название "
             />
+            <View>
+              <AntDesign
+                name="enviromento"
+                size={24}
+                color="#BDBDBD"
+                style={styles.placeIcon}
+              />
+              <TextInput
+                style={styles.inputPlace}
+                onChangeText={(value) =>
+                  setState((prevState) => ({ ...prevState, place: value }))
+                }
+                value={state.place}
+                placeholder="Местность "
+                onFocus={() => {
+                  setIsShowKeyboard(true);
+                }}
+              />
+            </View>
           </View>
         </KeyboardAvoidingView>
         <TouchableOpacity onPress={sendPhoto}>

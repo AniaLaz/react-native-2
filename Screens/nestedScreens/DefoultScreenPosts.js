@@ -21,6 +21,7 @@ export const DefaultScreen = ({ navigation, route }) => {
       // console.log("route.params.state.name", route.params.state.name);
       setPosts((prevState) => [...prevState, route.params]);
     }
+    setPosts((prevState) => [...prevState]);
   }, [route.params]);
 
   console.log("post", posts);
@@ -31,6 +32,7 @@ export const DefaultScreen = ({ navigation, route }) => {
   //   const openLink = () => navigation.navigate("Login");
   const shouMap = () => {
     console.log("locationppppppppp", route.params.location);
+
     navigation.navigate("Map", { location: route.params.location });
   };
 
