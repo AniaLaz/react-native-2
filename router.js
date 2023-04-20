@@ -11,10 +11,11 @@ import { View, StyleSheet } from "react-native";
 import { FormRegistration } from "./Screens/RegistrationScreen";
 import { FormLogin } from "./Screens/LoginScreen";
 import { Home } from "./Screens/Home";
-import { PostScreen } from "./Screens/PostsScreen";
+import PostScreen from "./Screens/PostsScreen";
+// import { DefaultScreen } from "./Screens/nestedScreens/DefoultScreenPosts";
 import { CreatePostsScreen } from "./Screens/CreatePostsScreen";
 import { ProfileScreen } from "./Screens/ProfileScreen";
-import { MapScreen } from "./Screens/MapScreen";
+import { MapScreen } from "./Screens/nestedScreens/MapScreen";
 
 export const UserRouter = (isAuht) => {
   if (!isAuht) {
@@ -38,7 +39,7 @@ export const UserRouter = (isAuht) => {
   return (
     <MainTab.Navigator screenOptions={{ tabBarShowLabel: false }}>
       <MainTab.Screen
-        name="Posts"
+        name="Post"
         component={PostScreen}
         options={() => ({
           headerShown: false,
@@ -118,23 +119,23 @@ export const UserRouter = (isAuht) => {
 // }
 
 
-const Router = (isAuht) => {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        isAuht="isAuht"
-        name="Home"
-        component={UserRouter}
-        options={{ headerShown: false }}
-      ></Stack.Screen>
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="Map"
-        component={MapScreen}
-      ></Stack.Screen>
-    </Stack.Navigator>
-  );
-};
+// const Router = (isAuht) => {
+//   return (
+//     <Stack.Navigator>
+//       <Stack.Screen
+//         isAuht="isAuht"
+//         name="Home"
+//         component={UserRouter}
+//         options={{ headerShown: false }}
+//       ></Stack.Screen>
+//       <Stack.Screen
+//         options={{ headerShown: false }}
+//         name="Map"
+//         component={MapScreen}
+//       ></Stack.Screen>
+//     </Stack.Navigator>
+//   );
+// };
 
 
 const styles = StyleSheet.create({
@@ -148,4 +149,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Router;
+export default UserRouter;

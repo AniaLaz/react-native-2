@@ -1,27 +1,36 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Platform,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import MapView, { Marker } from "react-native-maps";
 import { AntDesign } from "@expo/vector-icons";
 
-export const ProfileScreen = ({ navigation }) => {
-  const openLink = () => navigation.navigate("Create");
-  console.log(Platform.OS);
+export const MapScreen = ({ navigation, route }) => {
+  [location, setLocation] = useState(route.params.location);
+  // console.log(route.params.location.latitude);
+  const openLink = () => navigation.navigate("DefaultScreen");
   return (
-    <View style={styles.container}>
+    <View style={styles.containerPosts}>
       <View style={styles.heder}>
+        <Text style={styles.hederTitle}>Карта</Text>
         <TouchableOpacity style={styles.btnHeder} onPress={openLink}>
           <AntDesign name="arrowleft" size={24} color="#BDBDBD" />
         </TouchableOpacity>
-        <Text style={styles.hederTitle}>Публикации</Text>
       </View>
-      <View style={styles.containerPosts}>
-        <Text>ProfileScreen</Text>
-      </View>
+
+      <MapView
+        style={styles.mapBox}
+        initialRegion={{
+          latitude: location.latitude,
+          longitude: location.longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}
+      />
+      <Marker
+        coordinate={{
+          latitude: location.latitude,
+          longitude: location.longitude,
+        }}
+      />
     </View>
   );
 };
@@ -36,9 +45,9 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     paddingBottom: 11,
-    paddingTop: 55,
-    borderWidth: 1,
-    borderColor: "#BDBDBD",
+    paddingTop: 35,
+    // borderWidth: 1,
+    // borderColor: "#BDBDBD",
   },
   hederTitle: {
     fontFamily: "Roboto",
@@ -60,9 +69,12 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     paddingRight: 16,
   },
+  mapBox: {
+    flex: 1,
+  },
   btnHeder: {
     position: "absolute",
-    top: 56,
+    top: 36,
     left: 18,
   },
 });

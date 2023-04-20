@@ -25,16 +25,14 @@ export const CreatePostsScreen = ({ navigation }) => {
   const [cameraRef, setCameraRef] = useState(null);
   const [photo, setPhoto] = useState(null);
 
-    useEffect(() => {
-      (async () => {
-        const { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== "granted") {
-          console.log("Permission to access location was denied");
-        }
-
-      })();
-    }, []);
-
+  useEffect(() => {
+    (async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Permission to access location was denied");
+      }
+    })();
+  }, []);
 
   const takePhoto = async () => {
     console.log("photooooooooooooooo");
@@ -43,8 +41,6 @@ export const CreatePostsScreen = ({ navigation }) => {
     // console.log("location", location);
     // console.log("photo.uri", photo.uri);
     // await MediaLibrary.createAssetAsync(photo.uri);
-
-
     setPhoto(photo.uri);
   };
 
@@ -58,11 +54,15 @@ export const CreatePostsScreen = ({ navigation }) => {
     };
     console.log(coords);
     // setLocations(coords);
-    navigation.navigate("Posts", { photo: photo, state: state });
+    navigation.navigate("DefaultScreen", {
+      photo: photo,
+      state: state,
+      location: coords,
+    });
     // console.log("state", state);
   };
   const openLink = () => {};
-  // navigation.navigate("Posts");
+
   return (
     <View style={styles.container}>
       <View style={styles.heder}>
