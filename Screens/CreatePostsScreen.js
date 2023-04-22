@@ -7,6 +7,7 @@ import {
   Image,
   TextInput,
   KeyboardAvoidingView,
+  Keyboard,
 } from "react-native";
 import * as MediaLibrary from "expo-media-library";
 import { Camera } from "expo-camera";
@@ -60,8 +61,21 @@ export const CreatePostsScreen = ({ navigation }) => {
       state: state,
       location: coords,
     });
+    setPhoto(null);
+    setState(initialState);
+    setIsShowKeyboard(false);
+
     // console.log("state", state);
   };
+  const deletePhoto = () => {
+    setPhoto(null);
+    setIsShowKeyboard(false);
+     Keyboard.dismiss();
+  };
+  const makePhoto = () => {
+      setIsShowKeyboard(false);
+      Keyboard.dismiss();
+}
   const openLink = () => {};
 
   return (
@@ -74,23 +88,38 @@ export const CreatePostsScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.containerPosts}>
-        <View style={styles.cameraContaner}>
-          <Camera style={styles.camera} ref={setCameraRef}>
-            {photo && (
-              <View>
-                <Image
-                  style={styles.takePhotoContayner}
-                  source={{ uri: photo }}
-                />
-              </View>
-            )}
-            <TouchableOpacity onPress={takePhoto}>
-              <View style={styles.btnCamrta}>
-                <Fontisto name="camera" size={20} color="#BDBDBD" />
-              </View>
-            </TouchableOpacity>
-          </Camera>
-        </View>
+        {!isShowKeyboard && (
+          <View>
+            <View style={styles.cameraContaner}>
+              {photo ? (
+                <View>
+                  <Image
+                    style={{ width: "100%", height: 240 }}
+                    source={{ uri: photo }}
+                  />
+                </View>
+              ) : (
+                <Camera style={styles.camera} ref={setCameraRef}>
+                  <TouchableOpacity onPress={takePhoto}>
+                    <View style={styles.btnCamrta}>
+                      <Fontisto name="camera" size={20} color="#BDBDBD" />
+                    </View>
+                  </TouchableOpacity>
+                </Camera>
+              )}
+            </View>
+          </View>
+        )}
+        {photo ? (
+          <TouchableOpacity onPress={() => deletePhoto()}>
+            <Text style={styles.textAnderPhoto}>Редактировать фото</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={() => makePhoto()}>
+            <Text style={styles.textAnderPhoto}>Загрузите фото</Text>
+          </TouchableOpacity>
+        )}
+
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "padding"}
         >
@@ -127,11 +156,19 @@ export const CreatePostsScreen = ({ navigation }) => {
             </View>
           </View>
         </KeyboardAvoidingView>
-        <TouchableOpacity onPress={sendPhoto}>
-          <View style={styles.btnSubmit}>
-            <Text style={styles.btnSubmitText}>Опубликовать</Text>
-          </View>
-        </TouchableOpacity>
+        {photo && state ? (
+          <TouchableOpacity onPress={sendPhoto} disabled={false}>
+            <View style={styles.btnSubmit}>
+              <Text style={styles.btnSubmitText}>Опубликовать</Text>
+            </View>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={sendPhoto} disabled={true}>
+            <View style={styles.btnNotSubmit}>
+              <Text style={styles.btnNotSubmitText}>Опубликовать</Text>
+            </View>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
@@ -183,7 +220,7 @@ const styles = StyleSheet.create({
     borderColor: "#E8E8E8",
     borderRadius: 8,
     overflow: "hidden",
-    marginBottom: 48,
+    marginBottom: 8,
   },
   camera: {
     display: "flex",
@@ -202,16 +239,6 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     backgroundColor: "#FFFFFF",
   },
-  takePhotoContayner: {
-    position: "absolute",
-    top: -90,
-    left: -160,
-    borderColor: "#E8E8E8",
-    borderWidth: 1,
-    borderRadius: 8,
-    height: 240,
-    width: 320,
-  },
   btnSubmit: {
     paddingTop: 16,
     paddingBottom: 16,
@@ -223,8 +250,24 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#FF6C00",
   },
+  btnNotSubmit: {
+    paddingTop: 16,
+    paddingBottom: 16,
+    borderWidth: 1,
+    borderColor: "#F6F6F6",
+    borderRadius: 100,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "##F6F6F6",
+  },
   btnSubmitText: {
     color: "#FFFFFF",
+    fontFamily: "Roboto",
+    fontSize: 16,
+  },
+  btnNotSubmitText: {
+    color: "#BDBDBD",
     fontFamily: "Roboto",
     fontSize: 16,
   },
@@ -242,5 +285,11 @@ const styles = StyleSheet.create({
   },
   placeIcon: {
     position: "absolute",
+  },
+
+  textAnderPhoto: {
+    color: "#BDBDBD",
+    fontSize: 16,
+    marginBottom: 48,
   },
 });

@@ -33,7 +33,11 @@ export const DefaultScreen = ({ navigation, route }) => {
   const shouMap = () => {
     console.log("locationppppppppp", route.params.location);
 
-    navigation.navigate("Map", { location: route.params.location });
+    navigation.navigate("Map", {
+      location: route.params.location,
+      photo: route.params.photo,
+      state: route.params.state,
+    });
   };
 
   return (

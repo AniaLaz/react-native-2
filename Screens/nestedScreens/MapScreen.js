@@ -10,23 +10,17 @@ const initialState = {
 export const MapScreen = ({ navigation, route }) => {
   [location, setLocation] = useState(initialState);
 
+  console.log("params maps", route.params);
   
-
   useEffect(() => {
     setLocation(route.params.location);
+
     console.log("locationgggggggg", location);
   }, []);
  console.log("locationgggggggg222", location);
-  // console.log(route.params.location.latitude);
-  const openLink = () => navigation.navigate("DefaultScreen");
+
   return (
     <View style={styles.containerPosts}>
-      <View style={styles.heder}>
-        <Text style={styles.hederTitle}>Карта</Text>
-        <TouchableOpacity style={styles.btnHeder} onPress={openLink}>
-          <AntDesign name="arrowleft" size={24} color="#BDBDBD" />
-        </TouchableOpacity>
-      </View>
 
       <MapView
         style={styles.mapBox}
