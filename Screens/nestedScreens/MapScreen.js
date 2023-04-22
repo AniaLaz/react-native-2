@@ -4,8 +4,8 @@ import MapView, { Marker } from "react-native-maps";
 import { AntDesign } from "@expo/vector-icons";
 
 const initialState = {
-  latitude: "",
-  longitude: "",
+  latitude: null,
+  longitude: null,
 };
 export const MapScreen = ({ navigation, route }) => {
   [location, setLocation] = useState(initialState);
@@ -14,30 +14,30 @@ export const MapScreen = ({ navigation, route }) => {
   
   useEffect(() => {
     setLocation(route.params.location);
-
-    console.log("locationgggggggg", location);
   }, []);
- console.log("locationgggggggg222", location);
 
   return (
     <View style={styles.containerPosts}>
-
-      <MapView
-        style={styles.mapBox}
-        initialRegion={{
-          latitude: location.latitude,
-          longitude: location.longitude,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-      >
-        <Marker
-          coordinate={{
+      {location.latitude ? (
+        <MapView
+          style={styles.mapBox}
+          initialRegion={{
             latitude: location.latitude,
             longitude: location.longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
           }}
-        />
-      </MapView>
+        >
+          <Marker
+            coordinate={{
+              latitude: location.latitude,
+              longitude: location.longitude,
+            }}
+          />
+        </MapView>
+      ) : (
+        <Text>Карта не найдена, попробуйте еще раз</Text>
+      )}
     </View>
   );
 };

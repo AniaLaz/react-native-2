@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   FlatList,
   Image,
+  Alert,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
@@ -36,8 +37,7 @@ export const DefaultScreen = ({ navigation, route }) => {
     navigation.navigate("Map", {
       location: route.params.location,
       photo: route.params.photo,
-      state: route.params.state,
-    });
+       });
   };
 
   return (
@@ -72,7 +72,15 @@ export const DefaultScreen = ({ navigation, route }) => {
               />
               <Text>{item.state.name}</Text>
               <View style={styles.boxLocation}>
-                <TouchableOpacity onPress={shouMap}>
+                <TouchableOpacity
+                  onPress={() => 
+                   { console.log("item.location", item.location)
+                    if (item.location){
+                  shouMap()
+                    } else{Alert.alert("локайия отсутствует");}
+                  }
+                  }
+            >
                   <AntDesign
                     name="enviromento"
                     size={24}
