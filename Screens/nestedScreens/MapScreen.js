@@ -7,30 +7,33 @@ const initialState = {
   longitude: null,
 };
 export const MapScreen = ({ navigation, route }) => {
-  [location, setLocation] = useState(initialState);
+  [locationS, setLocationS] = useState(initialState);
 
   console.log("params maps", route.params);
+  console.log("???????????",route.params.location);
   
   useEffect(() => {
-    setLocation(route.params.location);
-  }, []);
+    console.log("??????2222", route.params.location);
+    setLocationS(route.params.location);
+    }, []);
 
+  console.log("&&&&&&&&&&&&", locationS);
   return (
     <View style={styles.containerPosts}>
-      {location.latitude ? (
+      {locationS.latitude ? (
         <MapView
           style={styles.mapBox}
           initialRegion={{
-            latitude: location.latitude,
-            longitude: location.longitude,
+            latitude: locationS.latitude,
+            longitude: locationS.longitude,
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}
         >
           <Marker
             coordinate={{
-              latitude: location.latitude,
-              longitude: location.longitude,
+              latitude: locationS.latitude,
+              longitude: locationS.longitude,
             }}
           />
         </MapView>
