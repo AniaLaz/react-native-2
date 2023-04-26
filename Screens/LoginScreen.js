@@ -7,12 +7,13 @@ import {
   TextInput,
   TouchableOpacity,
   Platform,
-  Linking,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   ImageBackground,
   Keyboard,
 } from "react-native";
+import { useDispatch } from "react-redux";
+import { authSignInUser } from "../redux/auth/authOperations";
 
 const initialState = {
   email: "",
@@ -24,12 +25,15 @@ export const FormLogin = ({ navigation }) => {
   const [state, setState] = useState(initialState);
   const [isShowKeyboard, setisShowKeyboard] = useState(false);
 
+    const dispatch = useDispatch();
+
   const openLink = () => navigation.navigate("Registration");
 
-  const keyboardHit = () => {
+  const handleSubmit = () => {
     setisShowKeyboard(false);
     Keyboard.dismiss();
-    console.log(state);
+    console.log("state login", state);
+    dispatch(authSignInUser(state));
     setState(initialState);
   };
   return (
@@ -73,7 +77,7 @@ export const FormLogin = ({ navigation }) => {
                 <TouchableOpacity
                   activeOpacity={0.8}
                   style={styles.btnForm}
-                  onPress={keyboardHit}
+                  onPress={handleSubmit}
                 >
                   <Text style={styles.btnTitle}>Войти</Text>
                 </TouchableOpacity>

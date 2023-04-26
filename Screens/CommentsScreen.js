@@ -1,6 +1,6 @@
 MapScreen;
-import React, { useState } from "react";
-import { StyleSheet, Text, View, Platform } from "react-native";
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
 
 export const CommentsScreen = () => {
   return (

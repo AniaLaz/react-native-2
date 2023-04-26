@@ -6,10 +6,15 @@
 //   TouchableWithoutFeedback,
 //   Keyboard,
 // } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import UserRouter from "./router";
+import React from "react";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
+import Main from "./component/Main/";
 
 export default function App() {
-  const routing = UserRouter(true);
-  return <NavigationContainer>{routing}</NavigationContainer>;
+  return (
+    <Provider store={store}>
+      <Main />
+    </Provider>
+  );
 }

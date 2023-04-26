@@ -9,13 +9,11 @@ import {
   KeyboardAvoidingView,
   Keyboard,
 } from "react-native";
-import * as MediaLibrary from "expo-media-library";
 import { Camera } from "expo-camera";
 import { AntDesign } from "@expo/vector-icons";
 import { Fontisto } from "@expo/vector-icons";
 import * as Location from "expo-location";
 
-import { log } from "react-native-reanimated";
 const initialState = {
   name: "",
   place: "",
@@ -70,12 +68,12 @@ export const CreatePostsScreen = ({ navigation }) => {
   const deletePhoto = () => {
     setPhoto(null);
     setIsShowKeyboard(false);
-     Keyboard.dismiss();
+    Keyboard.dismiss();
   };
-  const makePhoto = () => {
-      setIsShowKeyboard(false);
-      Keyboard.dismiss();
-}
+  const makePhoto = async () => {
+    setIsShowKeyboard(false);
+    Keyboard.dismiss();
+  };
   const openLink = () => {};
 
   return (
@@ -259,7 +257,7 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "##F6F6F6",
+    backgroundColor: "#F6F6F6",
   },
   btnSubmitText: {
     color: "#FFFFFF",

@@ -7,12 +7,13 @@ import {
   TextInput,
   TouchableOpacity,
   Platform,
-  Linking,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   ImageBackground,
   Keyboard,
 } from "react-native";
+import {  useDispatch} from "react-redux";
+import { authSignUpUser } from "../redux/auth/authOperations";
 
 const initialState = {
   login: "",
@@ -24,13 +25,15 @@ export const FormRegistration = ({ navigation }) => {
   console.log(Platform.OS);
   const [state, setState] = useState(initialState);
   const [isShowKeyboard, setisShowKeyboard] = useState(false);
-  // const link = "https://www.google.com";
-  // const openLink = () => Linking.openURL(link);
+
+  const dispatch = useDispatch();
+  
   const openLink = () => navigation.navigate("Login");
-  const keyboardHit = () => {
+  const hendleSubmit = () => {
     setisShowKeyboard(false);
     Keyboard.dismiss();
     console.log(state);
+    dispatch(authSignUpUser(state));
     setState(initialState);
   };
   return (
@@ -84,7 +87,7 @@ export const FormRegistration = ({ navigation }) => {
                 <TouchableOpacity
                   activeOpacity={0.8}
                   style={styles.btnForm}
-                  onPress={keyboardHit}
+                  onPress={hendleSubmit}
                 >
                   <Text style={styles.btnTitle}>Зарегистрироваться</Text>
                 </TouchableOpacity>

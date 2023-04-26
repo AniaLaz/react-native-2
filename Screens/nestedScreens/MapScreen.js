@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import { AntDesign } from "@expo/vector-icons";
 
 const initialState = {
   latitude: null,

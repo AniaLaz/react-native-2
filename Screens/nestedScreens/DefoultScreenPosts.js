@@ -10,12 +10,13 @@ import {
   Alert,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-
 import { AntDesign } from "@expo/vector-icons";
+import { authSignOutUser } from "../../redux/auth/authOperations";
+import { useDispatch } from "react-redux";
 
 export const DefaultScreen = ({ navigation, route }) => {
+  const dispatch = useDispatch();
   const [posts, setPosts] = useState([]);
-
   useEffect(() => {
     if (route.params) {
       console.log("route.params", route.params.photo);
@@ -27,17 +28,19 @@ export const DefaultScreen = ({ navigation, route }) => {
 
   console.log("post", posts);
 
-  const openLink = () => navigation.navigate("Create");
+  const signOut = () => {
+    dispatch(authSignOutUser());
+    console.log("authSignOutUser", authSignOutUser);
+  };
   console.log(Platform.OS);
 
-  //   const openLink = () => navigation.navigate("Login");
   const shouMap = () => {
     console.log("locationppppppppp", route.params.location);
 
     navigation.navigate("Map", {
       location: route.params.location,
       photo: route.params.photo,
-       });
+    });
   };
 
   return (
@@ -48,7 +51,7 @@ export const DefaultScreen = ({ navigation, route }) => {
             <Text>Публикации</Text>
           </View>
           <View style={styles.btnLogout}>
-            <TouchableOpacity onPress={openLink}>
+            <TouchableOpacity onPress={signOut}>
               <MaterialIcons name="logout" size={24} color="#BDBDBD" />
             </TouchableOpacity>
           </View>
@@ -73,14 +76,16 @@ export const DefaultScreen = ({ navigation, route }) => {
               <Text>{item.state.name}</Text>
               <View style={styles.boxLocation}>
                 <TouchableOpacity
-                  onPress={() => 
-                   { console.log("item.location", item.location)
-                    if (item.location){
-                  shouMap()
-                    } else{Alert.alert("локайия отсутствует");}
-                  }
-                  }
-            >
+                  style={styles.locationMarker}
+                  onPress={() => {
+                    console.log("item.location", item.location);
+                    if (item.location) {
+                      shouMap();
+                    } else {
+                      Alert.alert("локайия отсутствует");
+                    }
+                  }}
+                >
                   <AntDesign
                     name="enviromento"
                     size={24}
@@ -89,7 +94,7 @@ export const DefaultScreen = ({ navigation, route }) => {
                     // style={styles.placeIcon}
                   />
                 </TouchableOpacity>
-                <Text>{item.state.place}</Text>
+                <Text style={styles.locationText}>{item.state.place}</Text>
               </View>
             </View>
           )}
@@ -151,6 +156,14 @@ const styles = StyleSheet.create({
     width: 343,
   },
   boxLocation: {
+    // display: "flex",
+    flex: 1,
+  },
+  locationMarker: {
+    display: "flex",
+    marginRight: 20,
+  },
+  locationText: {
     display: "flex",
   },
 });

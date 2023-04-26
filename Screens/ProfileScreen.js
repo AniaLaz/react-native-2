@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   StyleSheet,
   Text,
@@ -14,10 +14,10 @@ export const ProfileScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.heder}>
+        <Text style={styles.hederTitle}>Публикации</Text>
         <TouchableOpacity style={styles.btnHeder} onPress={openLink}>
           <AntDesign name="arrowleft" size={24} color="#BDBDBD" />
         </TouchableOpacity>
-        <Text style={styles.hederTitle}>Публикации</Text>
       </View>
       <View style={styles.containerPosts}>
         <Text>ProfileScreen</Text>
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   hederTitle: {
     fontFamily: "Roboto",
     fontSize: 17,
-    color: " #212121",
+    color: "#212121",
   },
   futer: {
     height: 83,
@@ -61,8 +61,9 @@ const styles = StyleSheet.create({
     paddingRight: 16,
   },
   btnHeder: {
-    position: "absolute",
-    top: 56,
-    left: 18,
+    marginLeft: 200,
+    // position: "absolute",
+    // top: 56,
+    // left: 18,
   },
 });
