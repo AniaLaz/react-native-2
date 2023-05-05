@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import {
   StyleSheet,
   Text,
@@ -13,6 +14,10 @@ import { Camera } from "expo-camera";
 import { AntDesign } from "@expo/vector-icons";
 import { Fontisto } from "@expo/vector-icons";
 import * as Location from "expo-location";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "../firebase/config";
+// import { storage } from "../firebase/config";
 
 const initialState = {
   name: "",
@@ -24,6 +29,9 @@ export const CreatePostsScreen = ({ navigation }) => {
   const [state, setState] = useState(initialState);
   const [cameraRef, setCameraRef] = useState(null);
   const [photo, setPhoto] = useState(null);
+  const [coords, setCoords] = useState(null);
+
+  const { userId, login } = useSelector((state) => state.auth);
 
   useEffect(() => {
     (async () => {
@@ -35,25 +43,17 @@ export const CreatePostsScreen = ({ navigation }) => {
   }, []);
 
   const takePhoto = async () => {
-    console.log("photooooooooooooooo");
     const photo = await cameraRef.takePictureAsync();
-    // const location = await Location.getCurrentPositionAsync({});
-    // console.log("location", location);
-    // console.log("photo.uri", photo.uri);
-    // await MediaLibrary.createAssetAsync(photo.uri);
     setPhoto(photo.uri);
   };
 
   const sendPhoto = async () => {
-    console.log("sendPhoto");
+    uploadPostToServer();
     const location = await Location.getCurrentPositionAsync({});
-    console.log("location", location);
     const coords = {
       latitude: location.coords.latitude,
       longitude: location.coords.longitude,
     };
-    console.log(coords);
-    // setLocations(coords);
     navigation.navigate("DefaultScreen", {
       photo: photo,
       state: state,
@@ -62,9 +62,9 @@ export const CreatePostsScreen = ({ navigation }) => {
     setPhoto(null);
     setState(initialState);
     setIsShowKeyboard(false);
-
-    // console.log("state", state);
+    setCoords(coords);
   };
+
   const deletePhoto = () => {
     setPhoto(null);
     setIsShowKeyboard(false);
@@ -75,6 +75,43 @@ export const CreatePostsScreen = ({ navigation }) => {
     Keyboard.dismiss();
   };
   const openLink = () => {};
+
+  const storage = getStorage();
+
+  const uploadPhotoToServer = async () => {
+    const response = await fetch(photo);
+    const file = await response.blob();
+
+    const uniquePostId = Date.now().toString();
+    const storageRef = ref(storage, `images/${uniquePostId}`);
+    await uploadBytes(storageRef, file);
+    const processedPhoto = await getDownloadURL(
+      ref(storage, `images/${uniquePostId}`)
+    );
+    return processedPhoto;
+  };
+
+  const uploadPostToServer = async () => {
+    try {
+      const photoProcesssd = await uploadPhotoToServer();
+      console.log("state", state);
+      const coordsLoc = await coords;
+      console.log("coordsLoc", coordsLoc);
+      console.log("photoProcesssd", photoProcesssd);
+      console.log("userId", userId);
+      console.log("login", login);
+      const createPost = await addDoc(collection(db, "posts"), {
+        photoProcesssd,
+        state,
+        coords,
+        userId,
+        login,
+      });
+      console.log("createPost", createPost);
+    } catch (error) {
+      console.log("err", error.message);
+    }
+  };
 
   return (
     <View style={styles.container}>

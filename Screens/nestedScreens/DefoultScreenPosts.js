@@ -19,23 +19,23 @@ export const DefaultScreen = ({ navigation, route }) => {
   const [posts, setPosts] = useState([]);
   useEffect(() => {
     if (route.params) {
-      console.log("route.params", route.params.photo);
+      // console.log("route.params", route.params.photo);
       // console.log("route.params.state.name", route.params.state.name);
       setPosts((prevState) => [...prevState, route.params]);
     }
     setPosts((prevState) => [...prevState]);
   }, [route.params]);
 
-  console.log("post", posts);
+  // console.log("post", posts);
 
   const signOut = () => {
     dispatch(authSignOutUser());
     console.log("authSignOutUser", authSignOutUser);
   };
-  console.log(Platform.OS);
+  // console.log(Platform.OS);
 
   const shouMap = () => {
-    console.log("locationppppppppp", route.params.location);
+    // console.log("locationppppppppp", route.params.location);
 
     navigation.navigate("Map", {
       location: route.params.location,
