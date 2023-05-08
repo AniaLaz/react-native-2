@@ -21,43 +21,41 @@ import { AntDesign } from "@expo/vector-icons";
 import { EvilIcons } from "@expo/vector-icons";
 import { authSignOutUser } from "../../redux/auth/authOperations";
 import { useDispatch } from "react-redux";
-import {db} from "../../firebase/config";
+import { db } from "../../firebase/config";
 import { log } from "react-native-reanimated";
-
 
 export const DefaultScreen = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const [posts, setPosts] = useState([]);
 
-  const getAllPosts = async() => {
-
-    const q = query(collection(db, "posts"));
-    
-        const unsubscribe = onSnapshot(
-          q,
-          (querySnapshot) => {
-            const photoArr = [];
-            querySnapshot.forEach((doc) => {
-              photoArr.push({
-                ...doc.data(),
-                id: doc.id,
-              });
-            });
-            setPosts(photoArr);
-             },
-          (error) => {
-            console.log(error);
-          }
-        );
-        return () => {
-          unsubscribe();
-        };
-  }
-
   useEffect(() => {
-    getAllPosts()
+    getAllPosts();
   }, []);
 
+  console.log("posts", posts);
+
+  const getAllPosts = async () => {
+  
+    const unsubscribe = await onSnapshot(
+      query(collection(db, "posts")),
+      (querySnapshot) => {
+        const photoArr = [];
+        querySnapshot.forEach((doc) => {
+          photoArr.push({
+            ...doc.data(),
+            id: doc.id,
+          });
+        });
+        setPosts(photoArr);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+    return () => {
+      unsubscribe();
+    };
+  };
 
   const signOut = () => {
     dispatch(authSignOutUser());
@@ -70,8 +68,8 @@ export const DefaultScreen = ({ navigation, route }) => {
   };
 
   const shouComments = (id) => {
-    navigation.navigate("Comments", {postId: id} )
-  }
+    navigation.navigate("Comments", { postId: id });
+  };
 
   return (
     <View style={styles.container}>
@@ -92,7 +90,10 @@ export const DefaultScreen = ({ navigation, route }) => {
         <FlatList
           data={posts}
           keyExtractor={(item, indx) => indx.toString()}
-          renderItem={({ item }) => (
+          renderItem={({ item }) => {
+            console.log("item.state.name", item.state);
+            return (
+              
             <View style={styles.containerPost}>
               <Image
                 source={{
@@ -103,7 +104,9 @@ export const DefaultScreen = ({ navigation, route }) => {
               <Text>{item.state.name}</Text>
               <View style={styles.boxLocation}>
                 <TouchableOpacity
-                  onPress={() => { shouComments(item.id); }}
+                  onPress={() => {
+                    shouComments(item.id);
+                  }}
                 >
                   <EvilIcons name="comment" size={24} color="#BDBDBD" />
                   <Text>0</Text>
@@ -120,20 +123,15 @@ export const DefaultScreen = ({ navigation, route }) => {
                       }
                     }}
                   >
-                    <AntDesign
-                      name="enviromento"
-                      size={24}
-                      color="#BDBDBD"
-
-                      // style={styles.placeIcon}
-                    />
+                    <AntDesign name="enviromento" size={24} color="#BDBDBD" />
                   </TouchableOpacity>
                   <Text style={styles.locationText}>{item.state.place}</Text>
                 </View>
               </View>
             </View>
-          )}
+          )}}
         />
+
         <Text>PostScreen</Text>
       </View>
     </View>
