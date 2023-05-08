@@ -31,9 +31,7 @@ export const DefaultScreen = ({ navigation, route }) => {
 
   const getAllPosts = async() => {
 
-    console.log("db", db);
     const q = query(collection(db, "posts"));
-    console.log("q", q);
     
         const unsubscribe = onSnapshot(
           q,
@@ -66,21 +64,15 @@ export const DefaultScreen = ({ navigation, route }) => {
   };
 
   const shouMap = (locate) => {
-    console.log("route.params", locate);
     navigation.navigate("Map", {
       location: locate,
-      // photo: route.params.photo,
     });
   };
 
   const shouComments = (id) => {
     navigation.navigate("Comments", {postId: id} )
   }
-    // const shouComments = () => {
-    //   navigation.navigate("Comments");
-    // };
 
-console.log("posts", posts);
   return (
     <View style={styles.container}>
       <View style={styles.heder}>

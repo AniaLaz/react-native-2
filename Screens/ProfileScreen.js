@@ -1,14 +1,46 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import {
   StyleSheet,
   Text,
   View,
   Platform,
   TouchableOpacity,
+  FlatList,
+  Image,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
+import { db } from "../firebase/config";
+import { where, collection, onSnapshot, query } from "firebase/firestore";
 
 export const ProfileScreen = ({ navigation }) => {
+    const [posts, setPosts] = useState([]);
+  const { userId } = useSelector((state) => state.auth);
+
+
+  useEffect(() => {
+    getUserPosts();
+  }, []);
+
+  const getUserPosts = async () => {
+   await onSnapshot(query(collection(db, "posts"), where("userId", "==", userId)),
+      (querySnapshot) => {
+        const postsUserArr = [];
+        querySnapshot.forEach((doc) => {
+          postsUserArr.push({
+            ...doc.data(),
+            id: doc.id,
+          });
+        });
+        setPosts(postsUserArr);
+          },
+      (error) => {
+        console.log(error);
+      }
+    );
+  };
+
+
   const openLink = () => navigation.navigate("Create");
   console.log(Platform.OS);
   return (
@@ -20,7 +52,20 @@ export const ProfileScreen = ({ navigation }) => {
         </TouchableOpacity>
       </View>
       <View style={styles.containerPosts}>
-        <Text>ProfileScreen</Text>
+            <FlatList
+          data={posts}
+          keyExtractor={(item, indx) => indx.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.containerPostOne}>
+              <Image
+                source={{
+                  uri: item.photoProcesssd,
+                }}
+                style={styles.img}
+              />
+            </View>
+          )}
+        />
       </View>
     </View>
   );
@@ -65,5 +110,14 @@ const styles = StyleSheet.create({
     // position: "absolute",
     // top: 56,
     // left: 18,
+  },
+  containerPostOne: {
+    marginBottom: 25,
+    
+  },
+  img: {
+    borderRadius: 8,
+    height: 240,
+    width: 343,
   },
 });

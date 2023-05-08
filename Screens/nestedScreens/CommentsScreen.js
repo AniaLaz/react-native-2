@@ -21,20 +21,16 @@ export const CommentScreen = ({ route }) => {
   const { postId } = route.params;
   const { userId, login } = useSelector((state) => state.auth);
 
-  console.log("login", login);
 
   const [comment, setComment] = useState("");
 
   const [allComment, setAllComment] = useState([]);
 
-
   useEffect(() => {
-getAllPosts()
+    getAllPosts();
   }, []);
 
-
   const createPost = async () => {
-    console.log("createPost");
     try {
       const date = new Date().toLocaleString();
       const docRef = await addDoc(collection(db, "posts", postId, "comments"), {
@@ -51,7 +47,7 @@ getAllPosts()
 
   const getAllPosts = async () => {
     const date = new Date().toLocaleString();
-   await onSnapshot(
+    await onSnapshot(
       collection(db, "posts", postId, "comments"),
       (querySnapshot) => {
         const commentsArr = [];
@@ -73,7 +69,7 @@ getAllPosts()
           data={allComment}
           keyExtractor={(item, indx) => indx.toString()}
           renderItem={({ item }) => (
-            <View>
+            <View style={styles.containerComment}>
               <Text>{item.comment}</Text>
               <Text>{item.login}</Text>
             </View>
@@ -107,7 +103,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "flex-end",
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
     paddingBottom: 50,
     // alignItems: "center",
   },
@@ -142,7 +138,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#FFFFFF",
   },
-  containerComments:{
-flex:1,
-  }
+  containerComments: {
+    flex: 1,
+  },
+  containerComment: {
+    paddingBottom: 10,
+    paddingTop: 10,
+    paddingHorizontal: 10,
+    backgroundColor: "rgba(0, 0, 0, 0.03)",
+    borderWidth: 1,
+    borderRadius: 6,
+    borderColor: "rgba(0, 0, 0, 0.03)",
+    marginBottom: 24,
+  },
 });
