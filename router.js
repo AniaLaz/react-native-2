@@ -93,49 +93,10 @@ export const UserRouter = (isAuht) => {
           ),
         }}
       />
-      {/* <Stack.Navigator>
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name="Map"
-          component={MapScreen}
-        ></Stack.Screen>
-      </Stack.Navigator> */}
     </MainTab.Navigator>
   );
  
 };
-
-
-// export const mapRouter = () => {
-//   return (
-//     <Stack.Navigator>
-//       <Stack.Screen
-//         options={{ headerShown: false }}
-//         name="Map"
-//         component={MapScreen}
-//       ></Stack.Screen>
-//     </Stack.Navigator>
-//   );    
-// }
-
-
-// const Router = (isAuht) => {
-//   return (
-//     <Stack.Navigator>
-//       <Stack.Screen
-//         isAuht="isAuht"
-//         name="Home"
-//         component={UserRouter}
-//         options={{ headerShown: false }}
-//       ></Stack.Screen>
-//       <Stack.Screen
-//         options={{ headerShown: false }}
-//         name="Map"
-//         component={MapScreen}
-//       ></Stack.Screen>
-//     </Stack.Navigator>
-//   );
-// };
 
 
 const styles = StyleSheet.create({

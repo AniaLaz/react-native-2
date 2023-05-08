@@ -6,10 +6,10 @@ const initialState = {
   latitude: null,
   longitude: null,
 };
-export const MapScreen = ({ navigation, route }) => {
+export const MapScreen = ({ route }) => {
   [locationS, setLocationS] = useState(initialState);
 
-  console.log("params maps", route.params);
+  // console.log("params maps", route.params);
   console.log("???????????",route.params.location);
   
   useEffect(() => {
@@ -50,13 +50,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   heder: {
-    //   height: 88,
     display: "flex",
     alignItems: "center",
     paddingBottom: 11,
     paddingTop: 35,
-    // borderWidth: 1,
-    // borderColor: "#BDBDBD",
+
   },
   hederTitle: {
     fontFamily: "Roboto",

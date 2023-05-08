@@ -32,7 +32,7 @@ export const FormRegistration = ({ navigation }) => {
   const hendleSubmit = () => {
     setisShowKeyboard(false);
     Keyboard.dismiss();
-    console.log(state);
+    // console.log(state);
     dispatch(authSignUpUser(state));
     setState(initialState);
   };

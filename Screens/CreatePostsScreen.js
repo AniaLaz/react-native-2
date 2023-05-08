@@ -17,7 +17,6 @@ import * as Location from "expo-location";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../firebase/config";
-// import { storage } from "../firebase/config";
 
 const initialState = {
   name: "",
@@ -36,6 +35,13 @@ export const CreatePostsScreen = ({ navigation }) => {
   useEffect(() => {
     (async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
+            const location = await Location.getCurrentPositionAsync({});
+      const coords = await  {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      };
+       console.log("coords useEffect", coords);
+         setCoords(coords);
       if (status !== "granted") {
         console.log("Permission to access location was denied");
       }
@@ -49,20 +55,14 @@ export const CreatePostsScreen = ({ navigation }) => {
 
   const sendPhoto = async () => {
     uploadPostToServer();
-    const location = await Location.getCurrentPositionAsync({});
-    const coords = {
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude,
-    };
-    navigation.navigate("DefaultScreen", {
-      photo: photo,
-      state: state,
-      location: coords,
-    });
+
+    navigation.navigate("DefaultScreen");
+    console.log("coords sendPhoto", coords);
+
     setPhoto(null);
     setState(initialState);
     setIsShowKeyboard(false);
-    setCoords(coords);
+ 
   };
 
   const deletePhoto = () => {
@@ -94,20 +94,14 @@ export const CreatePostsScreen = ({ navigation }) => {
   const uploadPostToServer = async () => {
     try {
       const photoProcesssd = await uploadPhotoToServer();
-      console.log("state", state);
       const coordsLoc = await coords;
-      console.log("coordsLoc", coordsLoc);
-      console.log("photoProcesssd", photoProcesssd);
-      console.log("userId", userId);
-      console.log("login", login);
       const createPost = await addDoc(collection(db, "posts"), {
         photoProcesssd,
         state,
-        coords,
+        coordsLoc,
         userId,
         login,
       });
-      console.log("createPost", createPost);
     } catch (error) {
       console.log("err", error.message);
     }

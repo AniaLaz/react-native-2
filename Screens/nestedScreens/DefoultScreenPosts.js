@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
 import {
+  collection,
+  onSnapshot,
+  query,
+  orderBy,
+  doc,
+} from "firebase/firestore";
+import {
   StyleSheet,
   Text,
   View,
@@ -11,38 +18,69 @@ import {
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
+import { EvilIcons } from "@expo/vector-icons";
 import { authSignOutUser } from "../../redux/auth/authOperations";
 import { useDispatch } from "react-redux";
+import {db} from "../../firebase/config";
+import { log } from "react-native-reanimated";
+
 
 export const DefaultScreen = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const [posts, setPosts] = useState([]);
-  useEffect(() => {
-    if (route.params) {
-      // console.log("route.params", route.params.photo);
-      // console.log("route.params.state.name", route.params.state.name);
-      setPosts((prevState) => [...prevState, route.params]);
-    }
-    setPosts((prevState) => [...prevState]);
-  }, [route.params]);
 
-  // console.log("post", posts);
+  const getAllPosts = async() => {
+
+    console.log("db", db);
+    const q = query(collection(db, "posts"));
+    console.log("q", q);
+    
+        const unsubscribe = onSnapshot(
+          q,
+          (querySnapshot) => {
+            const photoArr = [];
+            querySnapshot.forEach((doc) => {
+              photoArr.push({
+                ...doc.data(),
+                id: doc.id,
+              });
+            });
+            setPosts(photoArr);
+             },
+          (error) => {
+            console.log(error);
+          }
+        );
+        return () => {
+          unsubscribe();
+        };
+  }
+
+  useEffect(() => {
+    getAllPosts()
+  }, []);
+
 
   const signOut = () => {
     dispatch(authSignOutUser());
-    console.log("authSignOutUser", authSignOutUser);
   };
-  // console.log(Platform.OS);
 
-  const shouMap = () => {
-    // console.log("locationppppppppp", route.params.location);
-
+  const shouMap = (locate) => {
+    console.log("route.params", locate);
     navigation.navigate("Map", {
-      location: route.params.location,
-      photo: route.params.photo,
+      location: locate,
+      // photo: route.params.photo,
     });
   };
 
+  const shouComments = (id) => {
+    navigation.navigate("Comments", {postId: id} )
+  }
+    // const shouComments = () => {
+    //   navigation.navigate("Comments");
+    // };
+
+console.log("posts", posts);
   return (
     <View style={styles.container}>
       <View style={styles.heder}>
@@ -65,36 +103,41 @@ export const DefaultScreen = ({ navigation, route }) => {
           renderItem={({ item }) => (
             <View style={styles.containerPost}>
               <Image
-                // source={{
-                //   uri: route.params.photo,
-                // }}
                 source={{
-                  uri: item.photo,
+                  uri: item.photoProcesssd,
                 }}
                 style={styles.img}
               />
               <Text>{item.state.name}</Text>
               <View style={styles.boxLocation}>
                 <TouchableOpacity
-                  style={styles.locationMarker}
-                  onPress={() => {
-                    console.log("item.location", item.location);
-                    if (item.location) {
-                      shouMap();
-                    } else {
-                      Alert.alert("локайия отсутствует");
-                    }
-                  }}
+                  onPress={() => { shouComments(item.id); }}
                 >
-                  <AntDesign
-                    name="enviromento"
-                    size={24}
-                    color="#BDBDBD"
-
-                    // style={styles.placeIcon}
-                  />
+                  <EvilIcons name="comment" size={24} color="#BDBDBD" />
+                  <Text>0</Text>
                 </TouchableOpacity>
-                <Text style={styles.locationText}>{item.state.place}</Text>
+
+                <View>
+                  <TouchableOpacity
+                    style={styles.locationMarker}
+                    onPress={() => {
+                      if (item.coordsLoc) {
+                        shouMap(item.coordsLoc);
+                      } else {
+                        Alert.alert("локайия отсутствует");
+                      }
+                    }}
+                  >
+                    <AntDesign
+                      name="enviromento"
+                      size={24}
+                      color="#BDBDBD"
+
+                      // style={styles.placeIcon}
+                    />
+                  </TouchableOpacity>
+                  <Text style={styles.locationText}>{item.state.place}</Text>
+                </View>
               </View>
             </View>
           )}
@@ -156,8 +199,8 @@ const styles = StyleSheet.create({
     width: 343,
   },
   boxLocation: {
-    // display: "flex",
-    flex: 1,
+    display: "flex",
+    // flex: 1,
   },
   locationMarker: {
     display: "flex",

@@ -32,7 +32,6 @@ export const FormLogin = ({ navigation }) => {
   const handleSubmit = () => {
     setisShowKeyboard(false);
     Keyboard.dismiss();
-    console.log("state login", state);
     dispatch(authSignInUser(state));
     setState(initialState);
   };

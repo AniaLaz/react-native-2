@@ -70,8 +70,6 @@ export const authStateChangeUser = () => async (dispatch, getSatte) => {
          const userUpdateProfile = {
            login: user.displayName,
            userId: user.uid,
-          //  email: user.email,
-          //  avatar: user.photoURL,
          };
          dispatch(authSlice.actions.authStateChange({ stateChange: true }));
          dispatch(authSlice.actions.updateUserProfile(userUpdateProfile));
@@ -80,21 +78,4 @@ export const authStateChangeUser = () => async (dispatch, getSatte) => {
    } catch (error) {
      console.log("err", error.message);
    }
-//     const updateUserSucces = await auth.currentUser;
-//   await onAuthStateChanged(auth, (user) => {
-//              if (user) {
-//          dispatch(
-//         authSlice.actions.updateUserProfile({
-//           userId: updateUserSucces.uid,
-//           login: updateUserSucces.displayName,
-//         })
-//     );
-//       dispatch(
-//         authSlice.actions.authStateChange({
-//           stateChange:true,
-//         })
-//       );
-//   }
-  
-  // })
 };
