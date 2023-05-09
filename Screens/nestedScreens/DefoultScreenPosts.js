@@ -22,21 +22,16 @@ import { EvilIcons } from "@expo/vector-icons";
 import { authSignOutUser } from "../../redux/auth/authOperations";
 import { useDispatch } from "react-redux";
 import { db } from "../../firebase/config";
-import { log } from "react-native-reanimated";
 
 export const DefaultScreen = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const [posts, setPosts] = useState([]);
-   
 
   useEffect(() => {
     getAllPosts();
-
   }, []);
 
   console.log("posts", posts);
-
-  
 
   const getAllPosts = async () => {
     const unsubscribe = await onSnapshot(
@@ -94,7 +89,6 @@ export const DefaultScreen = ({ navigation, route }) => {
           data={posts}
           keyExtractor={(item, indx) => indx.toString()}
           renderItem={({ item }) => {
-            console.log("item.state.name", item.state);
             return (
               <View style={styles.containerPost}>
                 <Image
@@ -115,11 +109,12 @@ export const DefaultScreen = ({ navigation, route }) => {
                       <EvilIcons
                         name="comment"
                         size={24}
-                        color="#BDBDBD"
+                        color={item.comments > 0 ? "#FF6C00" : "#BDBDBD"}
                         style={styles.comments}
                       />
                     </TouchableOpacity>
-                    <Text>0</Text>
+                    <Text>{item.comments}</Text>
+                    {/* <Text>0</Text> */}
                   </View>
                   <View style={styles.boxLocation}>
                     <TouchableOpacity
@@ -134,7 +129,7 @@ export const DefaultScreen = ({ navigation, route }) => {
                     >
                       <AntDesign name="enviromento" size={24} color="#BDBDBD" />
                     </TouchableOpacity>
-                    <Text style={styles.locationText}>{item.state.place}</Text>
+                    <Text>{item.state.place}</Text>
                   </View>
                 </View>
               </View>
@@ -213,8 +208,5 @@ const styles = StyleSheet.create({
 
   locationMarker: {
     marginRight: 8,
-  },
-  locationText: {
-    // display: "flex",
   },
 });
