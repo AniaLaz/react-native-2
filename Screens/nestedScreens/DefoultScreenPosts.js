@@ -27,15 +27,18 @@ import { log } from "react-native-reanimated";
 export const DefaultScreen = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const [posts, setPosts] = useState([]);
+   
 
   useEffect(() => {
     getAllPosts();
+
   }, []);
 
   console.log("posts", posts);
 
-  const getAllPosts = async () => {
   
+
+  const getAllPosts = async () => {
     const unsubscribe = await onSnapshot(
       query(collection(db, "posts")),
       (querySnapshot) => {
@@ -93,43 +96,50 @@ export const DefaultScreen = ({ navigation, route }) => {
           renderItem={({ item }) => {
             console.log("item.state.name", item.state);
             return (
-              
-            <View style={styles.containerPost}>
-              <Image
-                source={{
-                  uri: item.photoProcesssd,
-                }}
-                style={styles.img}
-              />
-              <Text>{item.state.name}</Text>
-              <View style={styles.boxLocation}>
-                <TouchableOpacity
-                  onPress={() => {
-                    shouComments(item.id);
+              <View style={styles.containerPost}>
+                <Image
+                  source={{
+                    uri: item.photoProcesssd,
                   }}
-                >
-                  <EvilIcons name="comment" size={24} color="#BDBDBD" />
-                  <Text>0</Text>
-                </TouchableOpacity>
+                  style={styles.img}
+                />
+                <Text style={styles.name}>{item.state.name}</Text>
 
-                <View>
-                  <TouchableOpacity
-                    style={styles.locationMarker}
-                    onPress={() => {
-                      if (item.coordsLoc) {
-                        shouMap(item.coordsLoc);
-                      } else {
-                        Alert.alert("локайия отсутствует");
-                      }
-                    }}
-                  >
-                    <AntDesign name="enviromento" size={24} color="#BDBDBD" />
-                  </TouchableOpacity>
-                  <Text style={styles.locationText}>{item.state.place}</Text>
+                <View style={styles.containerInvo}>
+                  <View style={styles.boxComments}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        shouComments(item.id);
+                      }}
+                    >
+                      <EvilIcons
+                        name="comment"
+                        size={24}
+                        color="#BDBDBD"
+                        style={styles.comments}
+                      />
+                    </TouchableOpacity>
+                    <Text>0</Text>
+                  </View>
+                  <View style={styles.boxLocation}>
+                    <TouchableOpacity
+                      style={styles.locationMarker}
+                      onPress={() => {
+                        if (item.coordsLoc) {
+                          shouMap(item.coordsLoc);
+                        } else {
+                          Alert.alert("локайия отсутствует");
+                        }
+                      }}
+                    >
+                      <AntDesign name="enviromento" size={24} color="#BDBDBD" />
+                    </TouchableOpacity>
+                    <Text style={styles.locationText}>{item.state.place}</Text>
+                  </View>
                 </View>
               </View>
-            </View>
-          )}}
+            );
+          }}
         />
 
         <Text>PostScreen</Text>
@@ -139,12 +149,7 @@ export const DefaultScreen = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
   heder: {
-    //   height: 88,
     display: "flex",
     alignItems: "center",
     paddingBottom: 11,
@@ -157,23 +162,28 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: " #212121",
   },
-  futer: {
-    height: 83,
-    alignItems: "center",
-    paddingTop: 9,
-    paddingBottom: 34,
-    borderWidth: 1,
-    borderColor: "#BDBDBD",
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
   },
   containerPosts: {
-    flex: 1,
+    alignItems: "center",
     paddingTop: 32,
-    paddingBottom: 32,
+    paddingBottom: 80,
     paddingLeft: 16,
     paddingRight: 16,
   },
+
+  containerInvo: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+
   containerPost: {
     marginBottom: 43,
+  },
+  name: {
+    marginBottom: 11,
   },
   btn: {
     width: 70,
@@ -187,16 +197,24 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     height: 240,
     width: 343,
+    marginBottom: 8,
   },
   boxLocation: {
-    display: "flex",
-    // flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
   },
+  boxComments: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  comments: {
+    marginRight: 9,
+  },
+
   locationMarker: {
-    display: "flex",
-    marginRight: 20,
+    marginRight: 8,
   },
   locationText: {
-    display: "flex",
+    // display: "flex",
   },
 });

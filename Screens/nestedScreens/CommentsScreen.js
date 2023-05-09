@@ -17,6 +17,7 @@ import {
   FlatList,
 } from "react-native";
 
+
 export const CommentScreen = ({ route }) => {
   const { postId } = route.params;
   const { userId, login } = useSelector((state) => state.auth);
@@ -30,20 +31,37 @@ export const CommentScreen = ({ route }) => {
     getAllPosts();
   }, []);
 
+  console.log("allComment1", allComment);
+  
   const createPost = async () => {
     try {
       const date = new Date().toLocaleString();
-      const docRef = await addDoc(collection(db, "posts", postId, "comments"), {
+      await addDoc(collection(db, "posts", postId, "comments"), {
         comment: comment,
         login: login,
         date: date,
         userId: userId,
       });
+      // uploadPostToServer();
       setComment("");
     } catch (error) {
       console.log("err", error.message);
     }
   };
+
+  // const uploadPostToServer = async () => {
+  //     console.log("uploadPostToServer");
+  //   try {
+  //       console.log("uploadPostToServer1");
+  //   await addDoc(collection(db, "posts", postId), {
+  //     comments: allComment.length,
+  //   });
+  //     } catch (error) {
+  //       console.log("err", error.message);
+  //     }
+  //   };
+
+
 
   const getAllPosts = async () => {
     const date = new Date().toLocaleString();
@@ -52,8 +70,9 @@ export const CommentScreen = ({ route }) => {
       (querySnapshot) => {
         const commentsArr = [];
         querySnapshot.forEach((doc) => {
+          console.log("doc", doc.data);
           commentsArr.push({
-            ...doc.data(),
+            ...doc.data()
           });
         });
         setAllComment(commentsArr);
