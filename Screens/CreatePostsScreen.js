@@ -33,25 +33,19 @@ export const CreatePostsScreen = ({ navigation }) => {
   const { userId, login } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    console.log("useEffect");
-    (async () => {
+      (async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
       const location = await Location.getCurrentPositionAsync({});
-      console.log("location", location);
-      const coords = await {
+       const coords = await {
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
       };
-      console.log("coords useEffect", coords);
       setCoords(coords);
       if (status !== "granted") {
         console.log("Permission to access location was denied");
       }
     })();
   }, []);
-
-
-  console.log("coords", coords);
   
   const takePhoto = async () => {
     const photo = await cameraRef.takePictureAsync();
@@ -60,10 +54,7 @@ export const CreatePostsScreen = ({ navigation }) => {
 
   const sendPhoto = async () => {
     uploadPostToServer();
-
     navigation.navigate("DefaultScreen");
-    console.log("coords sendPhoto", coords);
-
     setPhoto(null);
     setState(initialState);
     setIsShowKeyboard(false);

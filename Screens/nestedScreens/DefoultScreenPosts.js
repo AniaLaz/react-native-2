@@ -3,14 +3,12 @@ import {
   collection,
   onSnapshot,
   query,
-  orderBy,
-  doc,
+
 } from "firebase/firestore";
 import {
   StyleSheet,
   Text,
   View,
-  Platform,
   TouchableOpacity,
   FlatList,
   Image,
@@ -31,7 +29,6 @@ export const DefaultScreen = ({ navigation, route }) => {
     getAllPosts();
   }, []);
 
-  console.log("posts", posts);
 
   const getAllPosts = async () => {
     const unsubscribe = await onSnapshot(

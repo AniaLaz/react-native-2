@@ -22,11 +22,6 @@ export const authSignUpUser =
     });
 
       const updateUserSucces = await auth.currentUser;
-      console.log("updateUserSucces.uid", updateUserSucces.uid);
-          console.log(
-            "updateUserSucces.displayName",
-            updateUserSucces.displayName
-          );
 
        
       dispatch(
@@ -48,8 +43,7 @@ export const authSignInUser =
   async (dispatch, getSatte) => {
     try {
       const user = await signInWithEmailAndPassword(auth, email, password);
-      console.log("user In", user);
-    } catch (error) {
+     } catch (error) {
            console.log("error.message", error.message);
     }
     };

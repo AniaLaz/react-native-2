@@ -21,7 +21,7 @@ const initialState = {
 };
 
 export const FormLogin = ({ navigation }) => {
-  console.log(Platform.OS);
+  // console.log(Platform.OS);
   const [state, setState] = useState(initialState);
   const [isShowKeyboard, setisShowKeyboard] = useState(false);
 

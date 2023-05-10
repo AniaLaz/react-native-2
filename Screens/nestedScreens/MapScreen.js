@@ -9,15 +9,11 @@ const initialState = {
 export const MapScreen = ({ route }) => {
   [locationS, setLocationS] = useState(initialState);
 
-  // console.log("params maps", route.params);
-  console.log("???????????",route.params.location);
   
   useEffect(() => {
-    console.log("??????2222", route.params.location);
     setLocationS(route.params.location);
     }, []);
 
-  console.log("&&&&&&&&&&&&", locationS);
   return (
     <View style={styles.containerPosts}>
       {locationS.latitude ? (

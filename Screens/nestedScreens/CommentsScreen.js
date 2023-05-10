@@ -17,7 +17,6 @@ import {
   FlatList,
 } from "react-native";
 
-
 export const CommentScreen = ({ route }) => {
   const { postId } = route.params;
   const { userId, login } = useSelector((state) => state.auth);
@@ -29,8 +28,6 @@ export const CommentScreen = ({ route }) => {
   useEffect(() => {
     getAllComments();
   }, []);
-
-  console.log("allComment1", allComment);
 
   const createComments = async () => {
     try {
@@ -48,28 +45,13 @@ export const CommentScreen = ({ route }) => {
     }
   };
 
-
   const uploadContactsToServer = async () => {
-          const cityRef = doc(db, "posts", postId);
-          await setDoc(
-            cityRef,
-            { comments: allComment.length + 1 },
-            { merge: true }
-          );
-    //   console.log("uploadContactsToServer");
-    // try {
-    //     console.log("uploadContactsToServer");
-    // await addDoc(collection(db, `posts/${postId}`), {
-    //   comments: allComment.length,
-    //       });
-    //   } catch (error) {
-    //     console.log("err", error.message);
-    //   }
-    };
+    const cityRef = doc(db, "posts", postId);
+    await setDoc(cityRef, { comments: allComment.length + 1 }, { merge: true });
+  };
 
   const getAllComments = async () => {
     const date = new Date().toLocaleString();
-    console.log("postId getAllComments", postId);
 
     await onSnapshot(
       collection(db, "posts", postId, "comments"),
@@ -81,7 +63,6 @@ export const CommentScreen = ({ route }) => {
           });
         });
         setAllComment(commentsArr);
-        console.log("allComment", allComment);
       }
     );
   };

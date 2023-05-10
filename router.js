@@ -4,7 +4,6 @@ import { AntDesign } from "@expo/vector-icons";
 
 const MainStack = createStackNavigator();
 const MainTab = createBottomTabNavigator();
-const Stack = createStackNavigator();
 
 import { View, StyleSheet } from "react-native";
 
@@ -12,10 +11,9 @@ import { FormRegistration } from "./Screens/RegistrationScreen";
 import { FormLogin } from "./Screens/LoginScreen";
 import { Home } from "./Screens/Home";
 import PostScreen from "./Screens/PostsScreen";
-// import { DefaultScreen } from "./Screens/nestedScreens/DefoultScreenPosts";
 import { CreatePostsScreen } from "./Screens/CreatePostsScreen";
 import { ProfileScreen } from "./Screens/ProfileScreen";
-import { MapScreen } from "./Screens/nestedScreens/MapScreen";
+
 
 export const UserRouter = (isAuht) => {
   if (!isAuht) {

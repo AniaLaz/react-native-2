@@ -22,7 +22,7 @@ const initialState = {
 };
 
 export const FormRegistration = ({ navigation }) => {
-  console.log(Platform.OS);
+  // console.log(Platform.OS);
   const [state, setState] = useState(initialState);
   const [isShowKeyboard, setisShowKeyboard] = useState(false);
 
@@ -32,7 +32,6 @@ export const FormRegistration = ({ navigation }) => {
   const hendleSubmit = () => {
     setisShowKeyboard(false);
     Keyboard.dismiss();
-    // console.log(state);
     dispatch(authSignUpUser(state));
     setState(initialState);
   };

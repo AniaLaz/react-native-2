@@ -1,11 +1,8 @@
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
+import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { DefaultScreen } from "./nestedScreens/DefoultScreenPosts";
 import { MapScreen } from "./nestedScreens/MapScreen";
 import { CommentScreen } from "./nestedScreens/CommentsScreen";
-import { db } from "../firebase/config";
-import { where, collection, onSnapshot } from "firebase/firestore";
 
 const NestedStack = createStackNavigator();
 
